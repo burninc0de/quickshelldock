@@ -29,21 +29,9 @@ exec-once = quickshell -p /path/to/quickshelldock
 
 ## Configuration
 
-Create `~/.config/quickshelldock/config.json` to customize your apps:
+Copy `config/UserConfig.example.qml` to `config/UserConfig.qml` and edit it to customize your apps. Both files are in the project directory so Quickshell's native hot reload picks up changes instantly — no restart needed.
 
-```json
-{
-  "showOnFloating": false,
-  "apps": [
-    { "name": "Firefox", "icon": "firefox", "cmd": "firefox", "order": 0 },
-    { "name": "Kitty",   "icon": "kitty",   "cmd": "kitty",   "order": 1 },
-    { "name": "Files",   "icon": "system-file-manager", "cmd": "dolphin", "order": 2 },
-    { "name": "Code",    "icon": "code",    "cmd": "code",    "order": 3 }
-  ]
-}
-```
-
-See `config/config.example.json` for a full example.
+`UserConfig.qml` is gitignored, so your personal config stays out of the repo.
 
 ### App entry fields
 
@@ -77,6 +65,8 @@ When `true`, workspaces that contain only floating windows are treated as empty 
 ├── shell.qml          entrypoint — one DockPanel per screen
 ├── DockPanel.qml      dock UI, auto-hide, window matching
 └── config/
-    ├── DockApps.qml   config singleton (loads ~/.config/quickshelldock/config.json)
-    └── config.example.json
+    ├── DockApps.qml            config singleton
+    ├── UserConfig.qml          your personal config (gitignored)
+    └── UserConfig.example.qml  example to copy
+
 ```

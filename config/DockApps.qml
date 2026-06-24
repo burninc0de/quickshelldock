@@ -1,43 +1,29 @@
 pragma Singleton
 import QtQuick
-import Quickshell
-import Quickshell.Io
 
 QtObject {
   id: config
 
   property bool showOnFloating: true
-  property var apps: defaultApps()
 
-  property Process _configProc: Process {
-    stdout: StdioCollector {
-      onStreamFinished: {
-        if (text.length === 0) return
-        try {
-          var json = JSON.parse(text)
-          if (json.showOnFloating !== undefined)
-            config.showOnFloating = json.showOnFloating
-          if (json.apps && json.apps.length > 0)
-            config.apps = json.apps
-        } catch (e) {}
-      }
-    }
-  }
+  property var apps: [
+    { name: "Firefox", icon: "firefox", cmd: "firefox", order: 0 },
+    { name: "Kitty", icon: "kitty", cmd: "kitty", order: 1 },
+    { name: "Dolphin", icon: "system-file-manager", cmd: "dolphin", order: 2 },
+    { name: "Code", icon: "code", cmd: "code", order: 3 },
+  ]
 
   Component.onCompleted: {
-    var home = Quickshell.env("HOME")
-    if (home) {
-      _configProc.command = ["cat", home + "/.config/quickshelldock/config.json"]
-      _configProc.running = true
+    var comp = Qt.createComponent("UserConfig.qml")
+    if (comp.status === Component.Ready) {
+      var obj = comp.createObject(null)
+      if (obj) {
+        if (obj.showOnFloating !== undefined)
+          config.showOnFloating = obj.showOnFloating
+        if (obj.apps !== undefined && obj.apps.length > 0)
+          config.apps = obj.apps
+        obj.destroy()
+      }
     }
-  }
-
-  function defaultApps() {
-    return [
-      { name: "Firefox", icon: "firefox", cmd: "firefox", order: 0 },
-      { name: "Kitty", icon: "kitty", cmd: "kitty", order: 1 },
-      { name: "Dolphin", icon: "system-file-manager", cmd: "dolphin", order: 2 },
-      { name: "Code", icon: "code", cmd: "code", order: 3 },
-    ]
   }
 }
