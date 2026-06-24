@@ -4,7 +4,7 @@
 
 Minimal Hyprland dock/launchpad built with [Quickshell](https://quickshell.outfoxxie.de/). Launches apps, tracks running windows, and auto-hides when windows are present.
 
-This is a **proof of concept** — not a full taskbar. There are no window thumbnails, no subprocess tracking, no icon rearrangement, no drag-and-drop. The scope is deliberately tight: a fast launcher for your pinned apps that gets out of the way when you don't need it.
+This is a **proof of concept**. The scope is deliberately tight by design — no window thumbnails, no subprocess tracking, no icon rearrangement, no drag-and-drop. Just a fast launcher for your pinned apps that gets out of the way when you don't need it.
 
 > **Note:** If you already run another Quickshell-based panel/bar, this dock may conflict (Quickshell doesn't support multiple independent instances well). Test in an isolated session first.
 
