@@ -59,6 +59,10 @@ When `true`, workspaces that contain only floating windows are treated as empty 
 - **Click** &mdash; launches the app; if already running, focuses its window
 - **Running indicator** &mdash; a small dot below the icon
 
+### Workspace detection
+
+The dock uses a two-tier approach: `Hyprland.toplevels` (fast, via `rawEvent`) covers the common cases — empty workspace keeps the dock visible, occupied hides it. When `showOnFloating` is enabled and toplevels exist, it falls back to `hyprctl clients -j` to check whether only floating windows are present, since the Quickshell API doesn't expose a `floating` flag on toplevels.
+
 ## Project structure
 
 ```
