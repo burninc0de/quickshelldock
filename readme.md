@@ -1,6 +1,6 @@
 # quickshelldock
 
-[![Demo video](https://img.shields.io/badge/demo-video-blue)](https://github.com/burninc0de/quickshelldock/issues/1)
+<video src="https://private-user-images.githubusercontent.com/44199273/612524687-8de3dea3-8535-40db-8d07-a94fbe6f48e1.mp4" controls></video>
 
 Minimal Hyprland dock/launchpad built with [Quickshell](https://quickshell.outfoxxie.de/). Launches apps, tracks running windows, and auto-hides when windows are present.
 
