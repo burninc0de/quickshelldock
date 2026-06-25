@@ -2,11 +2,15 @@
 
 <video src="https://private-user-images.githubusercontent.com/44199273/612524687-8de3dea3-8535-40db-8d07-a94fbe6f48e1.mp4" controls></video>
 
-Minimal Hyprland dock/launchpad built with [Quickshell](https://quickshell.outfoxxie.de/). Launches apps, tracks running windows, and auto-hides when windows are present.
+Tiling window managers are great when you're in the zone, but sometimes you just want to click a shiny icon. This dock is for those times.
 
-This is a **proof of concept**. The scope is deliberately tight by design — no window thumbnails, no subprocess tracking, no icon rearrangement, no drag-and-drop. Just a fast launcher for your pinned apps that gets out of the way when you don't need it.
+Built with [Quickshell](https://quickshell.outfoxxie.de/) for Hyprland. Launches your pinned apps, tracks running windows, and — most importantly — **gets out of your way** when you don't need it. Instead of a timer or hover toggle, hide/show is driven by what's actually on your workspace: empty workspace → dock is visible. Windows present → dock hides. Event-driven, workspace-aware.
 
-> **Note:** If you already run another Quickshell-based panel/bar, this dock may conflict (Quickshell doesn't support multiple independent instances well). Test in an isolated session first.
+The scope is deliberately tight — no window thumbnails, no subprocess tracking, no icon rearrangement, no drag-and-drop. Just a fast launcher that knows when to be there and when to vanish.
+
+## Caveats
+
+- **Multiple Quickshell instances** &mdash; Quickshell doesn't support running multiple independent shells well. If you already have another Quickshell-based panel or bar, this dock will likely conflict. Test in an isolated Hyprland session first.
 
 ## Requirements
 
@@ -39,7 +43,7 @@ Copy `config/UserConfig.example.qml` to `config/UserConfig.qml` and edit it to c
 |---------|----------|-------------|
 | `name`  | yes      | Display name |
 | `icon`  | yes      | Icon name (theme) or absolute path to an image |
-| `cmd`   | yes      | Shell command to launch (split on whitespace) |
+| `cmd`   | yes      | Shell command to launch (split on whitespace — arguments with spaces aren't supported) |
 | `order` | yes      | Sort position in the dock |
 | `match` | no       | Match running windows by title substring |
 | `appId` | no       | Match running windows by Wayland appId |
@@ -54,10 +58,11 @@ When `true`, workspaces that contain only floating windows are treated as empty 
 
 ## Behavior
 
-- **Empty workspace** &mdash; dock always visible
-- **Workspace with windows** &mdash; dock auto-hides; shows on hover at the bottom edge
-- **Click** &mdash; launches the app; if already running, focuses its window
-- **Running indicator** &mdash; a small dot below the icon
+- **Empty workspace** &mdash; dock visible. Provides a visual shelf and one-click launchers.
+- **Workspace with windows** &mdash; dock hides. No screen real estate wasted. Hover the bottom edge to reveal.
+- **Click** &mdash; launches the app; if already running, focuses its window.
+- **Running indicator** &mdash; small dot below the icon.
+- **Keyboard vs mouse** &mdash; not a dichotomy. Launching a terminal or editor? Use Super+Enter. Launching YouTube or checking email? Click the icon. The dock is there for the moments your hands aren't on the keyboard.
 
 ### Workspace detection
 
