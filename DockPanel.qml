@@ -157,7 +157,8 @@ PanelWindow {
     id: triggerStrip
     anchors.bottom: parent.bottom
     anchors.horizontalCenter: dockBar.horizontalCenter
-    width: dockBar.width + 40
+    // hot area plus some fat finger margin
+    width: dockBar.width + 80
     height: 4
     color: "transparent"
 
