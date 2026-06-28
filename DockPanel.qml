@@ -263,10 +263,10 @@ PanelWindow {
                 var addr = toplevels[0].toplevel.lastIpcObject?.address
                 if (!addr || addr === "0") addr = "0x" + toplevels[0].toplevel.address
                 if (addr && addr !== "0x0") {
-                  Hyprland.dispatch("focuswindow address:" + addr)
+                  Hyprland.dispatch('hl.dsp.focus({ window = "address:' + addr + '" })')
                 } else {
                   var cls = toplevels[0].toplevel.lastIpcObject?.class
-                  if (cls) Hyprland.dispatch("focuswindow class:" + cls)
+                  if (cls) Hyprland.dispatch('hl.dsp.focus({ window = "class:' + cls + '" })')
                 }
                 if (!root.workspaceEmpty) root.dockVisible = false
               } else if (!busy) {

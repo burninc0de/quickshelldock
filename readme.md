@@ -15,7 +15,7 @@ The scope is deliberately tight: no window thumbnails, no subprocess tracking, n
 ## Requirements
 
 - [Quickshell](https://quickshell.outfoxxie.de/) (runtime)
-- Hyprland (for window tracking)
+- Hyprland 0.55+ (Lua config — uses `hl.dsp.focus()` dispatcher syntax)
 
 ## Install
 
@@ -25,7 +25,13 @@ Clone the repo anywhere and run with Quickshell:
 quickshell -p /path/to/quickshelldock
 ```
 
-Add to your Hyprland config to auto-start:
+Add to your Hyprland Lua config to auto-start:
+
+```lua
+o.exec_on_start("quickshell -p /path/to/quickshelldock")
+```
+
+Or if you're still on hyprlang:
 
 ```
 exec-once = quickshell -p /path/to/quickshelldock
