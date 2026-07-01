@@ -46,6 +46,7 @@ PanelWindow {
   property bool mouseOverDockArea: triggerHover.hovered || dockHover.hovered
   property bool workspaceEmpty: true
   property string clientsJson: ""
+  property int _badgeTick: 0
 
   Process {
     id: clientsProcess
@@ -103,6 +104,18 @@ PanelWindow {
     if (empty !== workspaceEmpty) workspaceEmpty = empty
   }
 
+  function getUnreadCount(toplevels) {
+    for (const tl of toplevels) {
+      const title = tl.toplevel?.title || ""
+      const m = title.match(/Inbox \((\d[\d,]*)\)/)
+      if (m) {
+        const n = parseInt(m[1].replace(/,/g, ""), 10)
+        if (!isNaN(n) && n > 0) return n
+      }
+    }
+    return 0
+  }
+
   function getToplevelsForApp(app) {
     let results = []
     for (const tl of Hyprland.toplevels.values) {
@@ -149,6 +162,9 @@ PanelWindow {
            "createworkspace", "createworkspacev2",
            "destroyworkspace", "destroyworkspacev2"].includes(event.name)) {
         updateWorkspaceEmpty()
+      }
+      if (event.name === "windowtitle") {
+        root._badgeTick++
       }
     }
   }
@@ -241,6 +257,11 @@ PanelWindow {
           readonly property var toplevels: root.getToplevelsForApp(modelData)
           readonly property bool isRunning: toplevels.length > 0
           readonly property int pid: isRunning ? toplevels[0].pid : 0
+          readonly property int unreadCount: {
+            var _ = root._badgeTick
+            if (!isRunning) return 0
+            return root.getUnreadCount(toplevels)
+          }
 
           HoverHandler {
             id: itemHover
@@ -318,6 +339,29 @@ PanelWindow {
             height: 4
             radius: 2 
             color: "#ffffff"
+          }
+
+          Rectangle {
+            visible: unreadCount > 0
+            anchors.top: parent.top
+            anchors.topMargin: -4
+            anchors.right: parent.right
+            anchors.rightMargin: -4
+            width: Math.max(18, badgeText.implicitWidth + 10)
+            height: 18
+            radius: 9
+            color: "#ea4335"
+            border.color: "#1e1e2e"
+            border.width: 1.5
+
+            Text {
+              id: badgeText
+              anchors.centerIn: parent
+              text: unreadCount > 99 ? "99+" : unreadCount.toString()
+              color: "#ffffff"
+              font.pixelSize: 10
+              font.bold: true
+            }
           }
         }
       }
