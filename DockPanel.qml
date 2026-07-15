@@ -37,6 +37,7 @@ PanelWindow {
       let entry = { icon: app.icon, name: app.name, cmd: app.cmd, order: app.order }
       if (app.match) entry.match = app.match
       if (app.appId) entry.appId = app.appId
+      if (app.minimizable !== undefined) entry.minimizable = app.minimizable
       apps.push(entry)
     }
     apps.sort((a, b) => a.order - b.order)
@@ -281,6 +282,53 @@ PanelWindow {
             onSingleTapped: {
               var cmdParts = modelData.cmd.split(/\s+/)
               if (isRunning) {
+                var minimizable = modelData.minimizable !== false
+                if (minimizable) {
+                  var anyOnCurrent = false
+                  var anyOnSpecial = false
+                  var ws = Hyprland.focusedWorkspace?.id
+                  for (var _i = 0; _i < toplevels.length; _i++) {
+                    var tws = toplevels[_i].toplevel.workspace?.id
+                    if (tws === ws) anyOnCurrent = true
+                    if (tws != null && tws < 0) anyOnSpecial = true
+                  }
+
+                  if (anyOnCurrent) {
+                    for (var _j = 0; _j < toplevels.length; _j++) {
+                      var tl = toplevels[_j].toplevel
+                      if (tl.workspace?.id !== ws) continue
+                      var addr = tl.lastIpcObject?.address
+                      if (!addr || addr === "0") addr = "0x" + tl.address
+                      if (addr && addr !== "0x0") {
+                        Hyprland.dispatch('hl.dsp.window.move({ workspace = "special:dock_minimize", follow = false, window = "address:' + addr + '" })')
+                      }
+                    }
+                    if (!root.workspaceEmpty) root.dockVisible = false
+                    return
+                  }
+
+                  if (anyOnSpecial) {
+                    for (var _k = 0; _k < toplevels.length; _k++) {
+                      var tl = toplevels[_k].toplevel
+                      if (tl.workspace?.id == null || tl.workspace.id >= 0) continue
+                      var addr = tl.lastIpcObject?.address
+                      if (!addr || addr === "0") addr = "0x" + tl.address
+                      if (addr && addr !== "0x0") {
+                        Hyprland.dispatch('hl.dsp.window.move({ workspace = ' + (ws ?? 1) + ', window = "address:' + addr + '" })')
+                      }
+                    }
+                    var addr = toplevels[0].toplevel.lastIpcObject?.address
+                    if (!addr || addr === "0") addr = "0x" + toplevels[0].toplevel.address
+                    if (addr && addr !== "0x0") {
+                      Hyprland.dispatch('hl.dsp.focus({ window = "address:' + addr + '" })')
+                    } else {
+                      var cls = toplevels[0].toplevel.lastIpcObject?.class
+                      if (cls) Hyprland.dispatch('hl.dsp.focus({ window = "class:' + cls + '" })')
+                    }
+                    return
+                  }
+                }
+
                 var addr = toplevels[0].toplevel.lastIpcObject?.address
                 if (!addr || addr === "0") addr = "0x" + toplevels[0].toplevel.address
                 if (addr && addr !== "0x0") {
