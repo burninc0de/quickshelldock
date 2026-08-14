@@ -187,7 +187,7 @@ PanelWindow {
 
   Timer {
     id: hideTimer
-    interval: 100
+    interval: 500
     repeat: false
     onTriggered: {
       if (root.workspaceEmpty || root.mouseOverDockArea) return
