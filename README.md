@@ -1,5 +1,9 @@
 # quickshelldock
 
+> **Moved!** This project has pivoted to an Omarchy plugin and now lives at
+> [burninc0de/burninc0de.dock](https://github.com/burninc0de/burninc0de.dock).
+> This repo is archived as-is.
+
 Hyprland dock panel built with [Quickshell](https://quickshell.outfoxxed.me/). No build step — loaded directly by the Quickshell runtime.
 
 ## Usage
